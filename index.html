@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScript Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <h3>Barcode</h3>
+    <img id="barcode" />
+    <button type="button" onclick="generateBarcodePDF('1023456789')">Run</button>
+    <button type="button" onclick="downloadPDF()">Download</button>
+
+    <!-- JsBarcode library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js" defer></script>
+    <!-- jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+
+    <script>
+      function generateBarcodePDF(text) {
+        JsBarcode("#barcode", text);
+
+      }
+
+      function downloadPDF() {
+        // Create a new jsPDF instance
+        window.jsPDF = window.jspdf.jsPDF;
+        const pdf = new jsPDF();
+
+
+        const barcodeDataURL = document.getElementById("barcode").src;
+
+        // Add the barcode image to the PDF
+        pdf.addImage(barcodeDataURL, "PNG", 10, 10, 100, 50);
+
+        // Save the PDF with the barcode
+        pdf.save("barcode.pdf");
+      }
+    </script>
+  </body>
+</html>
