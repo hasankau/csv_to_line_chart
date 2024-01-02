@@ -1,7 +1,7 @@
 using Genie, CSV, DataFrames, Plots, Mustache
 
 Genie.config.run_as_server = true
-Genie.config.cors_headers["Access-Control-Allow-Origin"] = "http://localhost:4200"
+Genie.config.cors_headers["Access-Control-Allow-Origin"] = "http://localhost:8000"
 # This has to be this way - you should not include ".../*"
 Genie.config.cors_headers["Access-Control-Allow-Headers"] = "Content-Type"
 Genie.config.cors_headers["Access-Control-Allow-Methods"] ="GET,POST,PUT,DELETE,OPTIONS" 
@@ -19,7 +19,7 @@ route("/generate/table") do
     data = CSV.read("Data.csv", DataFrame)
 
 	# Select only the first 10 rows
-	data = first(data, 10)
+	data = first(data, 100)
     
     # Generate HTML table
     html_table = "<table class='table table-striped table-sm' border='1'>"
@@ -52,7 +52,7 @@ route("/generate/graph") do
 	value_column = data[!, "Value"]
 
 	# Create a scatter plot
-	plt = plot(year_column, value_column, xlabel = "Year", ylabel = "Value", title = "Year vs Value", legend = false, bgcolour = RGBA(4,0,0))
+	plt = plot(year_column, value_column, xlabel = "Year", ylabel = "Value", title = "Year vs Value", legend = false)
 
 	# Save the plot to an HTML file
 	output_html = tempname() * ".html"
